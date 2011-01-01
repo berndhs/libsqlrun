@@ -90,6 +90,9 @@ else
 fi
 }
 
+#
+#  64 bit want special lib dir
+#
 find_bits () {
 BITS_SUFFIX=
 BITS=32
@@ -100,44 +103,6 @@ then
   BITS_SUFFIX=64
   BITS=64
 fi
-}
-
-
-find_lrelease () {
-
-  LREL=`which lrelease`
-  LREL4=`which lrelease-qt4`
-
-  if [ -z $LREL ] 
-  then
-    RES3="0"
-  else
-    RES3=`$LREL -version`
-  fi
-  if [ -z $LREL4 ]
-  then
-    RES4="0"
-  else
-    RES4=`$LREL4 -version`
-  fi
-
-  LRMATCH3=`expr match "$RES3" 'lrelease version 4.'`
-  LRMATCH4=`expr match "$RES4" 'lrelease version 4.'`
-
-  LRELEASE="lrelease"
-
-  if [ $LRMATCH3 -eq 19 ]
-  then
-    LRELEASE=$LREL
-  else
-    if [ $LRMATCH4 -eq 19 ]
-    then
-      LRELEASE=$LREL4
-    else
-      echo "cannot find LRELEASE for Qt4"
-      exit 1
-    fi
-  fi
 }
 
 #
@@ -218,7 +183,6 @@ else
   # check what qmake is called on this system
   #
   findqmake
-  find_lrelease
 fi
 
 #
