@@ -1,0 +1,46 @@
+
+# Makefile for ${PROJECT_NAME}
+#
+
+#//
+#//  Copyright (C) 2010 - Bernd H Stramm 
+#//
+#// This program is distributed under the terms of 
+#// the GNU General Public License version 2 
+#//
+#// This software is distributed in the hope that it will be useful, 
+#// but WITHOUT ANY WARRANTY; without even the implied warranty 
+#// of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+#//
+
+PROJECT_NAME=libsqlrunner
+PRO_FILE = ${PROJECT_NAME}.pro
+MAKEFILE = Make_${PROJECT_NAME}
+TOP_MAKEFILE = Makefile
+
+all: $(MAKEFILE)
+	$(MAKE) -f $(MAKEFILE) all
+
+clean: $(MAKEFILE) FORCE
+	$(MAKE) -f $(MAKEFILE) clean
+
+distclean: $(MAKEFILE) FORCE
+	$(MAKE) -f $(MAKEFILE) distclean
+	rm -f $(MAKEFILE)
+	rm -f $(TOP_MAKEFILE)
+
+install: $(MAKEFILE) FORCE
+	$(MAKE) -f $(MAKEFILE) install
+
+uninstall: $(MAKEFILE) FORCE
+	$(MAKE) -f $(MAKEFILE) uninstall
+	
+
+qmake: 
+	$(QMAKE) $(PRO_FILE)  -o $(MAKEFILE)
+
+$(MAKEFILE): $(PRO_FILE)
+	$(QMAKE) $(PRO_FILE)  -o $(MAKEFILE)
+
+FORCE:
+
