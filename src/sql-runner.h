@@ -1,5 +1,5 @@
-#ifndef DELIBERATE_SQLITE_RUNNER_H
-#define DELIBERATE_SQLITE_RUNNER_H
+#ifndef DELIBERATE_SQL_RUNNER_H
+#define DELIBERATE_SQL_RUNNER_H
 
 
 /****************************************************************
@@ -36,6 +36,8 @@
 #include <QMap>
 #include <QList>
 #include <QVariant>
+
+#define DELIBERATE_SQLRUNNER_VERSION 0x000100
 
 class QTimer;
 

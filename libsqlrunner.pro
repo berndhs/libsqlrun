@@ -23,7 +23,7 @@ SOURCES = \
    src/sql-run-database.cpp \
 
 
-DESTDIR=bin/
+DESTDIR=lib/
 !include ("options.pri") {
   LIBDIR=lib64
   PREFIX=/home/bernd/local
