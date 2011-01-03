@@ -62,6 +62,7 @@ public:
 
   SqlRunDatabase  *openDatabase (const QString & filename);
   SqlRunQuery     *newQuery (SqlRunDatabase * db);
+  int             Mark ();
 
   int PendingRequests ();
 
@@ -72,6 +73,7 @@ signals:
   void Closed (SqlRunDatabase * db);
   void Transaction (SqlRunDatabase * db, bool ok);
   void Commit (SqlRunDatabase * db, bool ok);
+  void MarkReached (int markId, bool ok);
 
 private slots:
 
@@ -90,6 +92,7 @@ private:
        Req_DeallocQuery = 7,
        Req_Transaction = 8,
        Req_Commit = 9,
+       Req_Mark = 10,
        Req_Bad
   };
 
@@ -101,6 +104,7 @@ private:
        Sig_Result,
        Sig_Transaction,
        Sig_Commit,
+       Sig_Mark,
        Sig_Bad
   };
 
@@ -168,6 +172,7 @@ private:
   void DoTransaction (RequestStruct & req);
   void DoCommit (RequestStruct & req);
   void DoDealloc (RequestStruct & req);
+  void DoMark (RequestStruct & req);
 
   void BuildResults (SqlRunQuery * query);
 

@@ -175,6 +175,9 @@ SqlRunner::DoWork ()
   case Req_Commit:
     DoCommit (req);
     break;
+  case Req_Mark:
+    DoMark (req);
+    break;
   default:
     break;
   }
@@ -204,6 +207,9 @@ SqlRunner::SendSignals ()
       break;
     case Sig_Commit:
       emit Commit (dbaseMap[sig.value0], sig.okFlag);
+      break;
+    case Sig_Mark:
+      emit MarkReached (sig.value0, sig.okFlag);
       break;
     default:
       break;
@@ -265,12 +271,12 @@ SqlRunner::RequestBind (int prepareId,
 {
   RequestStruct req (Req_Bind);
   req.queryId = prepareId;
-  req.requestId = nextRequest++;
   req.bindIndex = index;
   req.bindValue = value;
   req.bindType  = paramType;
   
   requestLock.lock ();
+  req.requestId = nextRequest++;
   requestList.append (req);
   requestLock.unlock ();
   WakeAll ();
@@ -304,6 +310,18 @@ SqlRunner::RequestCommit (int openId)
   requestLock.lock ();
   requestList.append (req);
   requestLock.unlock ();
+}
+
+int
+SqlRunner::Mark ()
+{
+  RequestStruct req (Req_Mark);
+  requestLock.lock ();
+  int mark = nextRequest++;
+  req.requestId = mark;
+  requestList.append (req);
+  requestLock.unlock ();
+  return mark;
 }
 
 void
@@ -405,6 +423,15 @@ SqlRunner::DoDealloc (RequestStruct & req)
     queryMap.remove (req.queryId);
     delete qry;
   }
+}
+
+void
+SqlRunner::DoMark (RequestStruct & req)
+{
+  SignalStruct sig (Sig_Mark);
+  sig.value0 = req.requestId;
+  sig.okFlag = true;
+  signalList.append (sig);
 }
 
 void
