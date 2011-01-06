@@ -94,14 +94,14 @@ fi
 #  64 bit want special lib dir
 #
 find_bits () {
-BITS_SUFFIX=
-BITS=32
+BITS_SUFFIX=64
+BITS=64
 ARCH=`uname -m`
-WHERE_64=`expr index $ARCH "_64"`
-if [ $WHERE_64 -gt 1 ]
+WHERE_64=`expr match $ARCH 'i.86'`
+if [ $WHERE_64 -gt 3 ]
 then
-  BITS_SUFFIX=64
-  BITS=64
+  BITS_SUFFIX=
+  BITS=32
 fi
 }
 
@@ -226,5 +226,6 @@ showmsg ""
 showmsg 'qmake is..................' $QMAKE
 showmsg 'Installation prefix is....' $PREFIX 
 showmsg 'Distro setting is.........' $DISTRO
+showmsg 'Architecture bits.........' $BITS
 showmsg 'Now you can build with....' $MAKE_PROGRAM 
 
